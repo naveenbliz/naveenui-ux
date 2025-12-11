@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile Form</title>
+  <style>
+    :root { --gap: 1rem; --bg: #f7f8fc; --card: #ffffff; --accent: #0066ff; --muted: #666; }
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: var(--bg); margin: 2rem; color: #111; }
+    .form-container { max-width: 680px; margin: 0 auto; background: var(--card); padding: 1.25rem 1.5rem; border-radius: 8px; box-shadow: 0 6px 24px rgba(18, 22, 30, 0.06); }
+    .form-row { display: flex; gap: var(--gap); margin-bottom: 1rem; align-items: flex-start; }
+    .field { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    label { font-size: .9rem; margin-bottom: .35rem; color: var(--muted); }
+    input[type="text"], input[type="date"], input[type="email"], input[type="tel"], textarea {
+      padding: .5rem .6rem; border: 1px solid #d8dbe0; border-radius: 6px; font-size: 1rem; background: #fff;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    fieldset { border: none; padding: 0; margin: 0; }
+    .gender-options { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .gender-options label { display: inline-flex; gap: .5rem; align-items: center; cursor: pointer; color: #222; font-size: .95rem; }
+    button { background: var(--accent); color: #fff; border: none; padding: .55rem .9rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    button[type="reset"] { background: #e6eefc; color: var(--accent); }
+    .actions { display:flex; gap: .75rem; align-items:center; margin-top: .5rem; }
+    .note { font-size: .9rem; color: var(--muted); }
+    .success { color: #0a7a3b; font-weight: 600; margin-left: .5rem; }
+    @media (max-width: 520px) {
+      .form-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container" role="region" aria-labelledby="formTitle">
+    <h2 id="formTitle" style="margin:0 0 1rem 0; font-size:1.25rem">Profile Form</h2>
+
+    <form id="profileForm">
+      <!-- First name & Last name in one div -->
+      <div class="form-row" id="nameRow">
+        <div class="field">
+          <label for="firstName">First name</label>
+          <input id="firstName" name="firstName" type="text" placeholder="First name" required />
+        </div>
+        <div class="field">
+          <label for="lastName">Last name</label>
+          <input id="lastName" name="lastName" type="text" placeholder="Last name" required />
+        </div>
+      </div>
+
+      <!-- Date in its own div -->
+      <div class="form-row">
+        <div class="field" style="flex: 0 0 220px;">
+          <label for="birthDate">Date</label>
+          <input id="birthDate" name="birthDate" type="date" required />
+        </div>
+      </div>
+
+      <!-- Gender with radio buttons in its own div -->
+      <div class="form-row">
+        <fieldset class="field" aria-labelledby="genderLabel">
+          <legend id="genderLabel" style="font-size: .95rem; margin-bottom: .35rem; color: var(--muted);">Gender</legend>
+          <div class="gender-options" role="radiogroup" aria-labelledby="genderLabel">
+            <label><input type="radio" name="gender" value="male" required /> Male</label>
+            <label><input type="radio" name="gender" value="female" /> Female</label>
+            <label><input type="radio" name="gender" value="other" /> Other</label>
+            <label><input type="radio" name="gender" value="prefer_not" /> Prefer not to say</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Email in its own div (inserted) -->
+      <div class="form-row">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" />
+        </div>
+      </div>
+
+      <!-- Phone number in its own div (inserted) -->
+      <div class="form-row">
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" placeholder="+1 (555) 555-5555" />
+        </div>
+      </div>
+
+      <!-- Description box in its own div -->
+      <div class="form-row">
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" placeholder="Tell us a little about yourself (optional)"></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+        <div class="note" id="status" aria-live="polite"></div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById('profileForm');
+      const status = document.getElementById('status');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form).entries());
+        console.log('Form submitted:', data);
+        status.innerHTML = '<span class="success">Form submitted — check console for data.</span>';
+
+        // Example: show submitted data briefly (non-blocking)
+        setTimeout(() => {
+          status.textContent = '';
+        }, 4000);
+
+        // To actually send this to a server, replace with fetch():
+        // fetch('/submit', { method: 'POST', body: new FormData(form) })
+      });
+    })();
+  </script>
+</body>
+</html>
